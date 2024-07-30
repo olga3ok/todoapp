@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from .models import TodoList, Category
 
 
 def redirect_view(request):
-    return redirect("/category")
+    return redirect(reverse('Category'))
 
 
 def todo(request):
@@ -16,16 +16,16 @@ def todo(request):
             title = request.POST["description"]
             date = str(request.POST["date"])
             category = request.POST["category_select"]
-            content = title + " --  " + date + " " + category
+            content = '--'.join([title, date, category])
             Todo = TodoList(title=title, content=content, due_date=date, category=Category.objects.get(name=category))
             Todo.save()
-            return redirect("/todo")
+            return redirect(reverse('TodoList'))
         if "Delete" in request.POST:
             checkedlist = request.POST.getlist('checkbox')
             for i in range(len(checkedlist)):
-                todo = TodoList.objects.filter(id=int(checkedlist[i]))
+                todo = TodoList.objects.filter(id__in=[int(_id) for _id in checkedlist])
                 todo.delete()
-    return render(request, "todo.html", {"todos": todos, "categories": categories})
+    return render(request, "todo.html", context={"todos": todos, "categories": categories})
 
 
 def category(request):
@@ -35,16 +35,16 @@ def category(request):
             name = request.POST["name"]
             category = Category(name=name)
             category.save()
-            return redirect("/category")
+            return redirect(reverse('Category'))
         if "Delete" in request.POST:
             check = request.POST.getlist('check')
             for i in range(len(check)):
                 try:
-                    categ = Category.objects.filter(id=int(check[i]))
+                    categ = Category.objects.filter(id__in=[int(_id) for _id in check])
                     categ.delete()
                 except BaseException:
                     return HttpResponse('<h1>Сначала удалите карточки с этими категориями</h1>')
-    return render(request, "category.html", {"categories": categories})
+    return render(request, "category.html", context={"categories": categories})
 
 
 

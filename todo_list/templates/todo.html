@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+  <div class="container">
+    <h1 class="text-center text-muted">Список дел</h1>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="description" class="form-label">Введите дело</label>
+        <div>
+          <input type="text" id="description" name="description" class="form-control" required>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label for="category" class="form-label">Категории</label>
+          <div>
+            <select name="category_select" id="category"required class="form-select mb-3" >
+              <option value="">Выберите категорию дела</option>
+              {% for category in categories %}
+              <option value="{{ category.name }}" name="{{ category.name }}">
+                {{ category.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div>
+        <label for="dueDate">Выберите дату</label>
+        <br>
+        <input type="date" id="dueDate" name="date" required>
+      </div>
+      <br>
+      <div>
+        <div>
+          <button name="Add" type="submit" class="btn btn-primary">
+            <span>Добавить задание</span>
+          </button>
+          <button name="Delete" formnovalidate type="submit" class="btn btn-danger">
+            <span>Удалить задание</span>
+          </button>
+        </div>
+      </div>
+      <div>
+        {% for todo in todos %}
+        <div>
+          <label for="">
+          <input type="checkbox" name="checkbox" value="{{ todo.id }}">
+          <span>{{ todo.title }}</span>
+          </label>
+          <span>{{ todo.category }}</span>
+          <strong><i></i>{{ todo.created }} - {{ todo.due_date }}</strong>
+        </div>
+        {% endfor %}
+      </div>
+    </form>
+  </div>
+  <div class="d-grid gap-2 fixed-bottom">
+    <button class="btn btn-dark"><a href="/category" class="link-light">Перейти к списку категорий</a></button>
+  </div>
+{% endblock %}

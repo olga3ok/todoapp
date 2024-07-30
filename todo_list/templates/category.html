@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+  <div class="container">
+    <h1 class="text-muted text-center">Категории</h1>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="description" class="form-label"> Введите категорию</label>
+        <div>
+          <input type="text" id="description" name="name" class="form-control" required>
+        </div>
+          <br>
+          <div>
+              <button name="Add" type="submit" class="btn btn-primary">
+                  <span>Добавить категорию</span>
+              </button>
+              <button name="Delete" formnovalidate type="submit" class="btn btn-danger">
+                  <span>Удалить категорию</span>
+              </button>
+          </div>
+      </div>
+
+      <div>
+          {% for category in categories %}
+          <div class="mb-3 form-check">
+              <label for="check_category" class="Form-check-label">
+                  <input type="checkbox" class="form-check-input" id="check_category" name="check" value="{{ category.id }}">
+                  <span>{{ category.name }}</span>
+              </label>
+          </div>
+          {% endfor %}
+
+      </div>
+    </form>
+  </div>
+</div>
+<div class="d-grid gap-2 fixed-bottom">
+    <button class="btn btn-dark"><a href="/todo" class="link-light">Перейти к списку дел</a></button>
+</div>
+{% endblock %}

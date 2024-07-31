@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from todo_list.views import todo, category, redirect_view
+from django.views.generic import TemplateView
 
 urlpatterns = [
     re_path(r'$^', redirect_view),

@@ -15,6 +15,7 @@ class Category(models.Model):
 
 class TodoList(models.Model):
     title = models.CharField(max_length=250)
+    description = models.TextField(max_length=500)
     content = models.TextField(blank=True)
 
     created = models.DateField(auto_now_add=True)

@@ -4,7 +4,7 @@ from .models import TodoList, Category
 
 
 def redirect_view(request):
-    return redirect(reverse('Category'))
+    return redirect(reverse('TodoList'))
 
 
 def todo(request):
@@ -13,11 +13,12 @@ def todo(request):
 
     if request.method == "POST":
         if "Add" in request.POST:
-            title = request.POST["description"]
+            title = request.POST["title"]
+            description = request.POST["description"]
             date = str(request.POST["date"])
             category = request.POST["category_select"]
-            content = '--'.join([title, date, category])
-            Todo = TodoList(title=title, content=content, due_date=date, category=Category.objects.get(name=category))
+            content = '--'.join([title, category, description, date])
+            Todo = TodoList(title=title, description=description, content=content, due_date=date, category=Category.objects.get(name=category))
             Todo.save()
             return redirect(reverse('TodoList'))
         if "Delete" in request.POST:
